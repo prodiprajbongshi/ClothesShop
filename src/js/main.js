@@ -65,27 +65,34 @@ $(document).ready(function () {
 
 
 // ================= BLOG SLIDER   =================
-let slideIndex = 1;
-showSlide(slideIndex);
+ 
+const track = document.getElementById("sliderTrack");
+const dots = document.querySelectorAll(".dot");
 
-function moveSlide(n) {
-  showSlide(slideIndex += n);
+let index = 0;
+const totalSlides = track.children.length;
+
+function updateSlider() {
+  track.style.transform = `translateX(-${index * 100}%)`;
+
+  dots.forEach(dot => dot.classList.remove("bg-black"));
+  dots[index].classList.add("bg-black");
 }
 
-function currentSlide(n) {
-  showSlide(slideIndex = n);
-}
+// DOT CLICK
+dots.forEach((dot, i) => {
+  dot.addEventListener("click", () => {
+    index = i;
+    updateSlider();
+  });
+});
 
-function showSlide(n) {
-  let slides = document.getElementsByClassName("slide");
+// AUTO SLIDE (optional)
+setInterval(() => {
+  index = (index + 1) % totalSlides;
+  updateSlider();
+}, 4000);
 
-  if (n > slides.length) slideIndex = 1;
-  if (n < 1) slideIndex = slides.length;
-
-  for (let i = 0; i < slides.length; i++) {
-    slides[i].classList.add("hidden");
-  }
-
-  slides[slideIndex - 1].classList.remove("hidden");
-}
+// INIT
+updateSlider();
  
